@@ -100,12 +100,27 @@ public class members {
 
     private static void updateMembers(Scanner sc) {
         
+        config conf = new config();
+        int id = 0;
+        
           members ms = new members();
             ms.viewMembers();
             
-        System.out.print("Enter the ID to Update: ");
-        int id = sc.nextInt();
-        sc.nextLine();  
+         while (true) {
+        System.out.print("Enter ID to Update: ");
+        if (sc.hasNextInt()) {
+            id = sc.nextInt();
+            if (conf.getSingleValue("SELECT s_hid FROM tbl_members WHERE s_hid=?", id) != 0) {
+                break; 
+            } else {
+                System.out.println("Selected ID doesn't exist! Please try again.");
+            }
+        } else {
+             System.out.println("Invalid input. Please enter a valid integer ID.");
+            sc.next(); 
+        }
+    
+        }  
         System.out.print("Enter new First Name: ");
         String nfname = sc.nextLine();
         System.out.print("Enter new Last Name: ");
@@ -120,7 +135,7 @@ public class members {
         
         String qry = "UPDATE tbl_members SET s_fname = ?, s_lastname = ?, s_age = ?, s_gender = ?, s_Status = ? WHERE s_hid = ?";
         
-        config conf = new config();
+        
         conf.updateRecord(qry, nfname, nlname, age, gend, nstatus, id);
     }
 

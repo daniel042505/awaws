@@ -173,12 +173,28 @@ public class attendance {
 
 
     private static void updateAttendance(Scanner sc) {
+       config conf = new config();
+        int id = 0;
+
         activities ac = new activities();
         ac.viewAllActivities();  
-
-        System.out.print("Enter the Attendance ID to Update: ");
-        int id = sc.nextInt();
-        sc.nextLine();
+        
+              while (true) {
+            System.out.print("Enter Order ID to Update: ");
+            if (sc.hasNextInt()) {
+                id = sc.nextInt();
+                if (conf.getSingleValue("SELECT a_id FROM tbl_attendance WHERE a_id=?", id) != 0) {
+                    break;
+                } else {
+                      System.out.println("Selected ID doesn't exist!");
+                }
+            } else {
+                System.out.println("Invalid input. Please enter a valid integer ID.");
+                sc.next();
+            }
+        
+                }
+        
         System.out.print("Enter new Activity Name: ");
         String activityName = sc.nextLine();
         System.out.print("Enter new Date: ");
@@ -189,7 +205,6 @@ public class attendance {
         String qry = "UPDATE tbl_activities "
                    + "SET s_name = ?, s_loc= ? "
                    + "WHERE s_id = ?";
-        config conf = new config();
         conf.updateRecord(qry, activityName, location, id);
 
         System.out.println("Attendance updated successfully.");

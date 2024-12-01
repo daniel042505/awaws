@@ -131,17 +131,27 @@ public class activities {
     }
 
   private static void updateActivities(Scanner sc) {
-    activities ac = new activities();
+     config conf = new config();
+        int id = 0;
+      
+      activities ac = new activities();
     ac.viewAllActivities();  
-
-    System.out.print("Enter the Activity ID to Update: ");
-    while (!sc.hasNextInt()) {
-        System.out.println("Invalid input, please enter a valid integer for Activity ID.");
-        sc.nextLine();  
-        System.out.print("Enter Activity ID: ");  
-    }
-    int id = sc.nextInt();
-    sc.nextLine(); 
+    
+    while (true) {
+            System.out.print("Enter ID to Update: ");
+            if (sc.hasNextInt()) {
+                id = sc.nextInt();
+                if (conf.getSingleValue("SELECT s_id FROM tbl_activities WHERE s_id=?", id) != 0) {
+                    break;
+                } else {
+                    System.out.println("Selected ID doesn't exist! Please try again.");
+                }
+                   } else {
+                System.out.println("Invalid input. Please enter a valid integer ID.");
+                sc.next();
+            }
+        }
+    
     
     System.out.println("Selected Activity ID: " + id);
 
@@ -168,7 +178,6 @@ public class activities {
 
    
     String qry = "UPDATE tbl_activities SET s_name = ?, s_date = ?, s_loc = ? WHERE s_id = ?";
-    config conf = new config();
     conf.updateRecord(qry, newName, newDate, newLocation, id);
 
     System.out.println("Activity ID " + id + " has been updated successfully.");

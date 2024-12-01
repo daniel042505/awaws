@@ -14,7 +14,7 @@ public class config {
         try {
             Class.forName("org.sqlite.JDBC"); // Load the SQLite JDBC driver
             con = DriverManager.getConnection("jdbc:sqlite:daniel.db"); // Establish connection
-            System.out.println("Connection Successful");
+       
         } catch (Exception e) {
             System.out.println("Connection Failed: " + e);
         }
@@ -117,6 +117,14 @@ public class config {
             System.out.println("Error retrieving single value: " + e.getMessage());
         }
         return result;
+    }
+
+    // Retrieve a record by ID
+    public ResultSet getRecordById(String query, int id) throws SQLException {
+        Connection conn = this.connectDB(); // Get connection
+        PreparedStatement pstmt = conn.prepareStatement(query);
+        pstmt.setInt(1, id); // Assuming your query has a placeholder for the ID
+        return pstmt.executeQuery();
     }
 
     // Helper Method for Setting PreparedStatement Values
