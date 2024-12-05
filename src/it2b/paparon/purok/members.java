@@ -73,19 +73,38 @@ public class members {
             System.out.print("Enter Age: ");
             int age = sc.nextInt();
             sc.nextLine();  
-            System.out.print("Enter Gender: ");
-            String gender = sc.nextLine();
-            System.out.print("Enter Status: ");
-            String status = sc.nextLine();
-            
-            
-            config conf = new config();
-            String sql = "INSERT INTO tbl_members (s_fname, s_lastname, s_age, s_gender, s_Status) VALUES (?, ?, ?, ?, ?)";
-            conf.addRecord(sql, fname, lname, age, gender, status);
+            String gender = "";
+        while (true) {
+            System.out.print("Enter Gender (m/f): ");
+            gender = sc.nextLine().toLowerCase();
+            if (gender.equals("m") || gender.equals("f")) {
+                break;
+            } else {
+                System.out.println("Invalid input. Please enter 'm' for male or 'f' for female.");
+            }
         }
 
-        System.out.println(numberOfMembers + " members have been added.");
+        
+        String status = "";
+        while (true) {
+            System.out.print("Enter Status (single, married, divorced, or widowed): ");
+            status = sc.nextLine().toLowerCase();
+            if (status.equals("single") || status.equals("married") || status.equals("divorced") || status.equals("widowed")) {
+                break;
+            } else {
+                System.out.println("Invalid input. Please enter one of the following: single, married, divorced, or widowed.");
+            }
+        }
+
+       
+        
+        config conf = new config();
+        String sql = "INSERT INTO tbl_members (s_fname, s_lastname, s_age, s_gender, s_Status) VALUES (?, ?, ?, ?, ?)";
+        conf.addRecord(sql, fname, lname, age, gender, status);
     }
+
+    System.out.println(numberOfMembers + " members have been added.");
+}
 
    
     public static void viewMembers() {
